@@ -26,9 +26,9 @@ type App struct {
  * App initialization.
  */
 func (a *App) Init() {
-    fmt.Println("------------------------\n");
-    fmt.Println(" ⡀⣀ ⢀⡀ ⣀⣀  ⢀⡀ ⣇⡀   ⣰⡁ ⡀⣀   ");
-    fmt.Println(" ⠏  ⠣⠭ ⠇⠇⠇ ⠣⠭ ⠇⠸ ⠶ ⢸  ⠏  \n");
+    fmt.Println("------------------------");
+    fmt.Println("⡀⣀ ⢀⡀ ⣀⣀  ⢀⡀ ⣇⡀ ⠃ ⢀⣀   ⢀⣀ ⠄ ⣀⣀  ⣀⡀ ⡇ ⢀⡀   ⢀⡀ ⢀⡀   ⡀ ⢀ ⢀⡀ ⣇⡀ ⢀⣀ ⢀⡀ ⡀⣀ ⡀⢀ ⢀⡀ ⡀⣀");
+    fmt.Println("⠏  ⠣⠭ ⠇⠇⠇ ⠣⠭ ⠇⠸   ⠭⠕   ⠭⠕ ⠇ ⠇⠇⠇ ⡧⠜ ⠣ ⠣⠭   ⣑⡺ ⠣⠜   ⠱⠱⠃ ⠣⠭ ⠧⠜ ⠭⠕ ⠣⠭ ⠏  ⠱⠃ ⠣⠭ ⠏ ");
     fmt.Println("------------------------");
 
     // init the router
