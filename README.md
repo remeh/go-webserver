@@ -14,3 +14,4 @@ Features :
 Roadmap :
   * **Full list of asset mime-types**
   * **Support go template** to render pages
+  * **Regexp in routing** to support complex routing
