@@ -2,6 +2,8 @@ package core;
 
 import (
     "fmt"
+    "encoding/json"
+    "io/ioutil"
     "container/list"
     "net/http"
     "time"
@@ -34,6 +36,9 @@ func (a *App) Init() {
     // init the router
     a.InitRouter();
 
+    // Read the JSON configuration
+    a.readConfiguration();
+
     // start
     a.Start(8080);
 }
@@ -45,6 +50,34 @@ func (a *App) InitRouter() {
 
 func (a *App) Start(port int) {
     http.ListenAndServe(fmt.Sprintf(":%d", port), nil);
+}
+
+func (a *App) readConfiguration() {
+    /*
+     * Read the file
+     */
+
+    data, err := ioutil.ReadFile("app/config.json"); // XXX hardcoded filenae
+    if (err != nil) {
+        fmt.Printf(" x Unable to read the config : error while reading the file : \n%s\n",err);
+        return;
+    }
+
+    /*
+     * Unmarshal the json.
+     */
+
+    var config ConfigurationFormat;
+    err = json.Unmarshal(data, &config);
+    if (err != nil) {
+        fmt.Printf(" x Unable to read the router configuration : error while unmarshaling the data : \n%s\n",err);
+    }
+
+    /*
+     * Evaluate the configuration.
+     */
+
+    a.router.evalutateConfiguration(config);
 }
 
 func logAccess(request *http.Request, fail bool, end string) {

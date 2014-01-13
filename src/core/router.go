@@ -2,7 +2,6 @@ package core;
 
 import (
     "fmt"
-    "encoding/json"
     "io/ioutil"
     "net/http"
 );
@@ -36,6 +35,8 @@ type PageConfigurationFormat struct {
     Routes  []string
     Name    string
     File    string
+    // Page type, possible values STATIC / GOTEMPLATE
+    Type    string
 }
 
 // ---------------------- 
@@ -46,7 +47,6 @@ type PageConfigurationFormat struct {
  */
 func (r *Router) Init() {
     r.Pages = make(map[string]*Page);
-    r.readConfiguration();
     fmt.Println(" - Router init OK");
 }
 
@@ -88,73 +88,39 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
 }
 
 /**
- * Reads the router configuration.
- */
-func (r *Router) readConfiguration() {
-    /*
-     * Read the file
-     */
-
-    data, err := ioutil.ReadFile("app/routes.json"); // XXX hardcoded configuration
-    if (err != nil) {
-        fmt.Printf(" x Unable to read the router configuration : error while reading the file : \n%s\n",err);
-        return;
-    }
-
-    /*
-     * Unmarshal the json.
-     */
-
-    var config ConfigurationFormat;
-    err = json.Unmarshal(data, &config);
-    if (err != nil) {
-        fmt.Printf(" x Unable to read the router configuration : error while unmarshaling the data : \n%s\n",err);
-    }
-
-    /*
-     * Evaluate the configuration.
-     */
-
-    r.evalutateConfiguration(config);
-}
-
-
-/**
- * Evaluates the read configuration.
+ * Evaluates the router part of the configuration.
  * @param config        the read configuration
  */
 func (r *Router) evalutateConfiguration(config ConfigurationFormat) {
     for i := 0; i < len(config.Pages); i++ {
         p := config.Pages[i];
 
-        // TODO move this in page.go
-
-        /*
-         * Read the content of the template.
-         */
+        // Read the content of the page / template.
 
         content, err := ioutil.ReadFile(fmt.Sprintf("pages/%s", p.File)); // TODO isn't there a security issue there?
         if (err != nil) {
-            fmt.Printf(" x Error while loading the page '%s' in the file '%s'\n", p.Name, p.File);
+            fmt.Printf(" x Error while loading the page '%s' in the file '%s' : %s \n", p.Name, p.File, err);
             continue;
         }
 
-        /*
-         * Creates the page.
-         */
+        // Creates the page.
 
         var page *Page  = new(Page);
         page.Body       = string(content);
         page.Name       = p.Name;
+        page.Type       = p.Type;
 
-        /*
-         * Adds it to the router.
-         */
+        // Prepares the page
+
+        page.Init();
+
+        // Adds it to the router.
+        // TODO regexp etc.
 
         for j := 0; j < len(p.Routes); j++ {
             r.Pages[p.Routes[j]] = page;
         }
 
-        fmt.Printf(" - Page '%s' loaded (with: '%s', binded on %s)\n", p.Name, p.File, p.Routes);
+        fmt.Printf(" - %s Page '%s' loaded (with: '%s', binded on %s)\n", p.Type, p.Name, p.File, p.Routes);
     }
 }
