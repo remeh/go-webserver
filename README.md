@@ -8,10 +8,7 @@ Usage:
   * 2nd method: `go run src/main.go`
 
 Features :
-  * **Page routing configuration** : ['/','/index'] -> index.htm, etc.
+  * **Routing with regexp** : ['/list/:id','/l/:id'] -> action list which receive a parameter 'id'
   * **Assets support** : the directory assets is directly rendered without evaluation
+  * **Support go template** : to render pages
 
-Roadmap :
-  * **Full list of asset mime-types**
-  * **Support go template** to render pages
-  * **Regexp in routing** to support complex routing
