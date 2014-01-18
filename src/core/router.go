@@ -72,6 +72,9 @@ func (r* Router) Add(name string, action Action, routes... string) {
         newRoute := new(Route);
         newRoute.Init(route);
 
+        // Inits the action
+        action.Init();
+
         // stores the action
         r.Actions[newRoute] = action;
     }
