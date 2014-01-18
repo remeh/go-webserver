@@ -8,7 +8,7 @@ Usage:
   * 2nd method: `go run src/main.go`
 
 Features :
-  * **Routing with regexp** : ['/list/:id','/l/:id'] -> action list which receive a parameter 'id'
-  * **Assets support** : the directory assets is directly rendered without evaluation
+  * **Routing with regexp** : ex: ['/list/:id','/l/:id'] can send to an action which receives a parameter 'id'
   * **Support go template** : to render pages
+  * **Assets support** : the directory assets is directly rendered without evaluation
 
