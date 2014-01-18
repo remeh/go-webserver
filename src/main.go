@@ -3,6 +3,7 @@ package main;
 import (
     "fmt"
     "./core"
+    "./site"
 );
 
 // ---------------------- 
@@ -10,9 +11,13 @@ import (
 func main() {
     // instanciate the app
     var app core.App;
+
     app.Init();
 
-    // reads the main configuration
-    fmt.Println("--");
+    // example route
+    app.Router.Add("index", &site.IndexAction{}, "/hello/:name");
+
+    fmt.Println("[info] Starting the application.");
+    app.Start();
 }
 

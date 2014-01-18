@@ -2,7 +2,6 @@ package core;
 
 import (
     "fmt"
-    "io/ioutil"
     "net/http"
 );
 
@@ -15,7 +14,7 @@ import (
  */
 type Router struct {
     // dynamic pages
-    Pages map[string]*Page;
+    Actions map[*Route]Action;
 }
 
 /**
@@ -46,14 +45,36 @@ type PageConfigurationFormat struct {
  * Router initialization.
  */
 func (r *Router) Init() {
-    r.Pages = make(map[string]*Page);
+    r.Actions = make(map[*Route]Action);
     fmt.Println(" - Router init OK");
 }
 
-
+/**
+ * Starts the router.
+ */
 func (r *Router) Start() {
     http.HandleFunc("/", func(w http.ResponseWriter, request *http.Request) { r.route(w, request) });
     fmt.Println(" - Router started");
+}
+
+/**
+ * Adds a named route to the router.
+ * @param name      the name of the route
+ * @param action    the action to execute.
+ * @param routes    on which routes this route is rendered.
+ * TODO post method ?
+ */
+func (r* Router) Add(name string, action Action, routes... string) {
+    for j := 0; j < len(routes); j++ {
+        route := routes[j];
+
+        // Creates the route.
+        newRoute := new(Route);
+        newRoute.Init(route);
+
+        // stores the action
+        r.Actions[newRoute] = action;
+    }
 }
 
 // ---------------------- 
@@ -63,64 +84,49 @@ func (r *Router) Start() {
  * Routing between pages and assets. Or 404.
  */
 func (r *Router) route(w http.ResponseWriter, request *http.Request) {
-    // Is this an existing page ?
-    page := r.Pages[request.URL.Path];
+    // Look for an existing route.
+    url     := request.URL.Path;
+    route   := r.matchRoute(url);
 
-    // Nope
-    if (page == nil) {
-        asset := FindAsset(request.URL.Path);
-        // assets ?
-        if (asset != nil) {
-            asset.Render(w, request);
-            return;
-        }
+    if (route != nil) {
+        // executes the action
+        logAccess(request, false, "");
 
-        // Nope.
-        // TODO 404 page
-        w.WriteHeader(404);
-        fmt.Fprint(w, "404");
-        logAccess(request, true, "-> 404");
+        params := route.ReadParameters(url);
+        action := r.Actions[route];
+
+        fmt.Fprintf(w, "%s", action.Execute(request, params));
         return;
     }
 
-    // render the page
-    page.Render(w, request);
+    // nope, looks in assets
+    asset := FindAsset(request.URL.Path);
+    // assets ?
+    if (asset != nil) {
+        asset.Render(w, request);
+        return;
+    }
+
+    // nope.
+    // TODO 404 page
+    w.WriteHeader(404);
+    fmt.Fprint(w, "404");
+    logAccess(request, true, "-> 404");
+    return;
 }
 
 /**
- * Evaluates the router part of the configuration.
- * @param config        the read configuration
+ * Looks whether a route is matching the given pattern.
+ * @param route     the pattern to match
+ * @return the action to execute if some found.
  */
-func (r *Router) evalutateConfiguration(config ConfigurationFormat) {
-    for i := 0; i < len(config.Pages); i++ {
-        p := config.Pages[i];
-
-        // Read the content of the page / template.
-
-        content, err := ioutil.ReadFile(fmt.Sprintf("pages/%s", p.File)); // TODO isn't there a security issue there?
-        if (err != nil) {
-            fmt.Printf(" x Error while loading the page '%s' in the file '%s' : %s \n", p.Name, p.File, err);
-            continue;
+func (r *Router) matchRoute(url string) *Route {
+    // Look through the whole route if one matches
+    for key, _ := range r.Actions {
+        if (key.Match(url)) {
+            // This one match! Return the route.
+            return key;
         }
-
-        // Creates the page.
-
-        var page *Page  = new(Page);
-        page.Body       = string(content);
-        page.Name       = p.Name;
-        page.Type       = p.Type;
-
-        // Prepares the page
-
-        page.Init();
-
-        // Adds it to the router.
-        // TODO regexp etc.
-
-        for j := 0; j < len(p.Routes); j++ {
-            r.Pages[p.Routes[j]] = page;
-        }
-
-        fmt.Printf(" - %s Page '%s' loaded (with: '%s', binded on %s)\n", p.Type, p.Name, p.File, p.Routes);
     }
+    return nil;
 }

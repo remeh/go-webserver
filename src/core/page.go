@@ -36,7 +36,7 @@ func (p *Page) Init() {
         template, err := template.New(p.Name).Parse(p.Body);
         if (err != nil) {
             fmt.Println("Error while compiling template '%s' : %s", p.Name, err);
-        } else { 
+        } else {
             p.Template = template;
         }
     }
@@ -45,18 +45,15 @@ func (p *Page) Init() {
 
 func (p *Page) Render(w http.ResponseWriter, request *http.Request) {
     if (p.Type == "GOTEMPLATE") {
-        p.renderGoTemplate(w, request);       
+        p.renderGoTemplate(w, request);
     } else {
         fmt.Fprintf(w, "%s", p.Body);
     }
-    logAccess(request, false, "");
 }
 
-func (p *Page) renderGoTemplate(w http.ResponseWriter, request *http.Request) {
-    // TODO parameters
-    err := p.Template.Execute(w, nil);
+func (p *Page) renderGoTemplate(w http.ResponseWriter, request *http.Request, params... string) {
+    err := p.Template.Execute(w, params);
     if (err != nil) {
         fmt.Println("Error while rendering the template '%s' : %s", p.Name, err);
     }
 }
-

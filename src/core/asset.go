@@ -52,7 +52,7 @@ func FindAsset(path string) *Asset {
 // Transforms the path of the request to an asset path.
 // @param path      the path to transform.
 func TransformAssetPath(path string) string {
-    return fmt.Sprintf("assets%s", path);
+    return fmt.Sprintf("public%s", path);
 }
 
 func (a *Asset) Render(w http.ResponseWriter, request *http.Request) {
