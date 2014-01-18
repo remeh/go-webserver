@@ -47,9 +47,8 @@ func (a *App) InitRouter() {
     a.Router.Start();
 }
 
-func (a *App) Start() {
-    // TODO
-    http.ListenAndServe(":8080", nil);
+func (a *App) Start(port int) {
+    http.ListenAndServe(fmt.Sprintf(":%d", port), nil);
 }
 
 func (a *App) readConfiguration() {

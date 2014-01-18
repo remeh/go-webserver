@@ -18,6 +18,6 @@ func main() {
     app.Router.Add("index", &site.IndexAction{}, "/hello/:name");
 
     fmt.Println("[info] Starting the application.");
-    app.Start();
+    app.Start(8080);
 }
 

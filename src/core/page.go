@@ -3,6 +3,7 @@ package core;
 import (
     "fmt"
     "net/http"
+    "io/ioutil"
     "text/template"
 );
 
@@ -26,6 +27,21 @@ type Page struct {
 
 // ---------------------- 
 // Methods
+
+func CreateStaticPage(name string, path string) *Page {
+    page := new(Page);
+    page.Name       = name;
+    page.Type       = "STATIC";
+    page.Template   = nil;
+
+    content, err := ioutil.ReadFile(fmt.Sprintf("%s", path));
+    if (err != nil) {
+        fmt.Printf("x Error while creating the static page '%s' reading the file '%s'\n", page.Name, path);
+    }
+
+    page.Body       = string(content);
+    return page;
+}
 
 /**
  * Page initialization.
