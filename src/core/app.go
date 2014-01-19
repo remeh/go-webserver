@@ -36,10 +36,6 @@ func (a *App) Init() {
     // init the router
     a.InitRouter();
 
-    /*
-    // Read the JSON configuration
-    a.readConfiguration();
-    */
 }
 
 func (a *App) InitRouter() {
@@ -49,34 +45,6 @@ func (a *App) InitRouter() {
 
 func (a *App) Start(port int) {
     http.ListenAndServe(fmt.Sprintf(":%d", port), nil);
-}
-
-func (a *App) readConfiguration() {
-    /*
-     * Read the file
-     */
-
-    data, err := ioutil.ReadFile("app/config.json"); // XXX hardcoded filenae
-    if (err != nil) {
-        fmt.Printf(" x Unable to read the config : error while reading the file : \n%s\n",err);
-        return;
-    }
-
-    /*
-     * Unmarshal the json.
-     */
-
-    var config ConfigurationFormat;
-    err = json.Unmarshal(data, &config);
-    if (err != nil) {
-        fmt.Printf(" x Unable to read the router configuration : error while unmarshaling the data : \n%s\n",err);
-    }
-
-    /*
-     * Evaluate the configuration.
-    // TODO remove
-     */
-    //a.router.evalutateConfiguration(config);
 }
 
 func logAccess(request *http.Request, fail bool, end string) {
@@ -96,5 +64,5 @@ func logAccess(request *http.Request, fail bool, end string) {
     if (len(ip) == 0) {
         ip = request.RemoteAddr;
     }
-    fmt.Printf("%s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end);
+    fmt.Printf("[info] %s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end);
 }

@@ -17,27 +17,6 @@ type Router struct {
     Actions map[*Route]Action;
 }
 
-/**
- * Configuration format.
- * TODO maybe move this in a different go file.
- */
-type ConfigurationFormat struct {
-    // The different pages
-    Pages   []PageConfigurationFormat
-}
-
-/**
- * Page configuration format.
- * TODO maybe move this in a different go file.
- */
-type PageConfigurationFormat struct {
-    Routes  []string
-    Name    string
-    File    string
-    // Page type, possible values STATIC / GOTEMPLATE
-    Type    string
-}
-
 // ---------------------- 
 // Public methods
 
@@ -46,7 +25,7 @@ type PageConfigurationFormat struct {
  */
 func (r *Router) Init() {
     r.Actions = make(map[*Route]Action);
-    fmt.Println(" - Router init OK");
+    fmt.Println("[info] Router init OK");
 }
 
 /**
@@ -54,7 +33,7 @@ func (r *Router) Init() {
  */
 func (r *Router) Start() {
     http.HandleFunc("/", func(w http.ResponseWriter, request *http.Request) { r.route(w, request) });
-    fmt.Println(" - Router started");
+    fmt.Println("[info] Router started");
 }
 
 /**

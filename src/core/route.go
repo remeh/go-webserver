@@ -10,6 +10,8 @@ import (
 // Declarations
 
 /**
+ * A route configured for the webapp.
+ *
  * @author Rémy MATHIEU
  */
 type Route struct {

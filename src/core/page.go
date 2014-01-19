@@ -2,7 +2,6 @@ package core;
 
 import (
     "fmt"
-    "net/http"
     "io/ioutil"
     "text/template"
 );
