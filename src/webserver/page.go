@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 import (
     "fmt"
@@ -42,6 +42,29 @@ func CreateStaticPage(name string, path string) *Page {
     return page;
 }
 
+func CreateDynamicPage(name string, path string) *Page {
+    page := new(Page);
+    page.Name       = name;
+    page.Type       = "GOTEMPLATE";
+    page.Template   = nil;
+
+    content, err := ioutil.ReadFile(fmt.Sprintf("%s", path));
+    if (err != nil) {
+        fmt.Printf("[error] Error while creating the dynamic page '%s' reading the file '%s'\n", page.Name, path);
+    }
+
+    page.Body = string(content);
+    template, err := template.New(page.Name).Parse(page.Body);
+
+    if (err != nil) {
+        fmt.Println("[error] Error while compiling template '%s' : %s", page.Name, err);
+    } else {
+        page.Template = template;
+    }
+
+    return page;
+}
+
 /**
  * Page initialization.
  */
@@ -58,17 +81,19 @@ func (p *Page) Init() {
     fmt.Printf(" - Page '%s' done\n",p.Name);
 }
 
-func (p *Page) Render(w http.ResponseWriter, request *http.Request) {
+func (p *Page) Render(data interface{}) string {
     if (p.Type == "GOTEMPLATE") {
-        p.renderGoTemplate(w, request);
-    } else {
-        fmt.Fprintf(w, "%s", p.Body);
+        return p.RenderTemplate(data);
     }
+    return p.Body;
 }
 
-func (p *Page) renderGoTemplate(w http.ResponseWriter, request *http.Request, params... string) {
-    err := p.Template.Execute(w, params);
+
+func (p *Page) RenderTemplate(data interface{}) string {
+    out := new(SimpleStringWriter);
+    err := p.Template.Execute(out, data);
     if (err != nil) {
         fmt.Println("Error while rendering the template '%s' : %s", p.Name, err);
     }
+    return out.Value;
 }

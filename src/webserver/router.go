@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 import (
     "fmt"
@@ -72,7 +72,7 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
 
     if (route != nil) {
         // executes the action
-        logAccess(request, false, "");
+        go logAccess(request, false, "");
 
         params := route.ReadParameters(url);
         action := r.Actions[route];
@@ -93,7 +93,7 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
     // TODO 404 page
     w.WriteHeader(404);
     fmt.Fprint(w, "404");
-    logAccess(request, true, "-> 404");
+    go logAccess(request, true, "-> 404");
     return;
 }
 

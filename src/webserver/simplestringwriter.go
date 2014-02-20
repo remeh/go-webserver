@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 /**
  * A simple writer which writes into a string.

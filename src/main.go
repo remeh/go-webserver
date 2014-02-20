@@ -2,7 +2,7 @@ package main;
 
 import (
     "fmt"
-    "./core"
+    "./webserver"
     "./site"
 );
 
@@ -10,7 +10,7 @@ import (
 
 func main() {
     // instanciate the app
-    var app core.App;
+    var app webserver.App;
 
     app.Init();
 

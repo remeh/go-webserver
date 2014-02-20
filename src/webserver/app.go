@@ -1,9 +1,7 @@
-package core;
+package webserver;
 
 import (
     "fmt"
-    "encoding/json"
-    "io/ioutil"
     "container/list"
     "net/http"
     "time"

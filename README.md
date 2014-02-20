@@ -12,3 +12,5 @@ Features :
   * **Support go template** : to render pages
   * **Assets support** : the directory assets is directly rendered without evaluation
 
+Roadmap :
+  * **Use regexp only when needed** : route without parameters could be faster if no regexp were use for them.

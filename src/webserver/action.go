@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 import (
     "net/http"

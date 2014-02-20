@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 import (
     "fmt"
@@ -6,7 +6,7 @@ import (
     "strings"
 );
 
-// ---------------------- 
+// ----------------------
 // Declarations
 
 /**
@@ -20,7 +20,7 @@ type Route struct {
     params map[int]string;
 }
 
-// ---------------------- 
+// ----------------------
 // Methods
 
 /**
