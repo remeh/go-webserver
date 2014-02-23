@@ -77,7 +77,7 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
         params := route.ReadParameters(url);
         action := r.Actions[route];
 
-        httpCode, body := action.Execute(request, params);
+        httpCode, body := action.Execute(w, request, params);
         w.WriteHeader(httpCode);
         fmt.Fprintf(w, "%s", body);
         return;
