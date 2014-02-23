@@ -9,5 +9,5 @@ import (
 
 type Action interface {
     Init();
-    Execute(request *http.Request, parameters map[string]string) string
+    Execute(request *http.Request, parameters map[string]string) (int, string)
 }
