@@ -14,6 +14,6 @@ type IndexAction struct {
 func (a *IndexAction) Init() {
 }
 
-func (a *IndexAction) Execute(request *http.Request, parameters map[string]string) string {
-    return fmt.Sprintf("hello " + parameters["name"]);
+func (a *IndexAction) Execute(writer http.ResponseWriter, request *http.Request, parameters map[string]string) (int,string) {
+    return 200, fmt.Sprintf("hello " + parameters["name"]);
 }

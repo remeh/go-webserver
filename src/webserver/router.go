@@ -43,13 +43,13 @@ func (r *Router) Start() {
  * @param routes    on which routes this route is rendered.
  * TODO post method ?
  */
-func (r* Router) Add(name string, action Action, routes... string) {
+func (r* Router) Add(name string, method string, action Action, routes... string) {
     for j := 0; j < len(routes); j++ {
         route := routes[j];
 
         // Creates the route.
         newRoute := new(Route);
-        newRoute.Init(route);
+        newRoute.Init(method, route);
 
         // Inits the action
         action.Init();
@@ -68,7 +68,7 @@ func (r* Router) Add(name string, action Action, routes... string) {
 func (r *Router) route(w http.ResponseWriter, request *http.Request) {
     // Look for an existing route.
     url     := request.URL.Path;
-    route   := r.matchRoute(url);
+    route   := r.matchRoute(request.Method, url);
 
     if (route != nil) {
         // executes the action
@@ -104,10 +104,10 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
  * @param route     the pattern to match
  * @return the action to execute if some found.
  */
-func (r *Router) matchRoute(url string) *Route {
+func (r *Router) matchRoute(method string, url string) *Route {
     // Look through the whole route if one matches
     for key, _ := range r.Actions {
-        if (key.Match(url)) {
+        if (key.Match(method, url)) {
             // This one match! Return the route.
             return key;
         }

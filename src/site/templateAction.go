@@ -20,7 +20,7 @@ func (a *TemplateAction) Init() {
     a.page = webserver.CreateDynamicPage("templatetest", "templates/test.htm");
 }
 
-func (a *TemplateAction) Execute(request *http.Request, parameters map[string]string) string {
-    return a.page.Render(TemplateParams{"Content to insert in the template."});
+func (a *TemplateAction) Execute(writer http.ResponseWriter, request *http.Request, parameters map[string]string) (int, string) {
+    return 200, a.page.Render(TemplateParams{"Content to insert in the template."});
 }
 

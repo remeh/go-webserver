@@ -15,8 +15,8 @@ func main() {
     app.Init();
 
     // example route
-    app.Router.Add("index", &site.IndexAction{}, "/hello/:name");
-    app.Router.Add("template", &site.TemplateAction{}, "/template/:name");
+    app.Router.Add("index", "*", &site.IndexAction{}, "/hello/:name");
+    app.Router.Add("template", "POST", &site.TemplateAction{}, "/template/:name");
 
     fmt.Println("[info] Starting the application.");
     app.Start(8080);

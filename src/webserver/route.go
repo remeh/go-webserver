@@ -15,9 +15,10 @@ import (
  * @author Rémy MATHIEU
  */
 type Route struct {
-    route string
-    expr *regexp.Regexp
-    params map[int]string;
+    route   string;
+    method  string;
+    expr    *regexp.Regexp;
+    params  map[int]string;
 }
 
 // ----------------------
@@ -26,7 +27,7 @@ type Route struct {
 /**
  * Page initialization.
  */
-func (r *Route) Init(route string) {
+func (r *Route) Init(method string, route string) {
     r.params = make(map[int]string);
 
     // Looks for parameters in the route
@@ -44,8 +45,9 @@ func (r *Route) Init(route string) {
     expr, err     := regexp.Compile(fmt.Sprintf("^%s$",finalRoute));
 
     // Stores the information.
-    r.expr  = expr;
-    r.route = route;
+    r.expr      = expr;
+    r.route     = route;
+    r.method    = method;
 
     if (err != nil) {
         fmt.Printf("[error] Error while compiling the route %s\n", route);
@@ -59,8 +61,8 @@ func (r *Route) Init(route string) {
  * @param route     the route to match
  * @return true if the given route string matches.
  */
-func (r *Route) Match(route string) bool {
-    return r.expr.MatchString(route);
+func (r *Route) Match(method string, route string) bool {
+    return (r.method == "*" || strings.Contains(r.method, method)) && r.expr.MatchString(route);
 }
 
 /**
