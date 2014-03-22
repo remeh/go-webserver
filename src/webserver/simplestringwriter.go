@@ -9,6 +9,6 @@ type SimpleStringWriter struct {
 }
 
 func (s *SimpleStringWriter) Write(p []byte) (int, error) {
-    s.Value = string(p);
+    s.Value += string(p);
     return len(p), nil;
 }
