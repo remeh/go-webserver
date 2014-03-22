@@ -50,9 +50,10 @@ func (r *Route) Init(method string, route string) {
     r.method    = method;
 
     if (err != nil) {
-        fmt.Printf("[error] Error while compiling the route %s\n", route);
+        fmt.Printf("[error] Error while compiling the route %s :\n", route);
+        fmt.Println(err);
     } else {
-        fmt.Printf("[info] Route '%s' compiled.\n", route);
+        fmt.Printf("[info] Route %s '%s' compiled.\n", method, route);
     }
 }
 
