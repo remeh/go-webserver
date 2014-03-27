@@ -4,6 +4,7 @@ import (
     "fmt"
     "regexp"
     "strings"
+    "net/url"
 );
 
 // ----------------------
@@ -69,12 +70,26 @@ func (r *Route) Match(method string, route string) bool {
 /**
  * Reverses the route (replaces the given parameters with the given values).
  */
-func (r *Route) Reverse(parameters map[string]string) string {
+func (r *Route) Reverse(routeParameters map[string]string, getParameters map[string]string) string {
+    // Replaces the route parameters.
     result := r.route;
-    for key, value := range parameters {
-        result = strings.Replace(result, key, value, 1);
+    for key, value := range routeParameters {
+        result = strings.Replace(result, ":" + key, value, 1);
     }
-    return result;
+
+    // Builds the query parts.
+    queryParameters := "";
+    i := 0;
+    for key, value := range getParameters {
+        if (i != 0) {
+            queryParameters += "&";
+        }
+        queryParameters = queryParameters + key + "=" + value;
+        i++;
+    }
+
+
+    return result + "?" + url.QueryEscape(queryParameters);
 }
 
 /**

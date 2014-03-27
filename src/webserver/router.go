@@ -64,12 +64,16 @@ func (r* Router) Add(name string, method string, action Action, routes... string
     }
 }
 
-func (r* Router) Reverse(routeName string, parameters map[string]string) (string,error) {
+func (r* Router) Print(plop string) string {
+    return plop;
+}
+
+func (r* Router) Reverse(routeName string, routeParameters map[string]string, getParameters map[string]string) (string,error) {
     route := r.Routes[routeName];
     if (route == nil) {
         return "", errors.New("Unknown route : " + routeName);
     }
-    return route.Reverse(parameters), nil;
+    return route.Reverse(routeParameters, getParameters), nil;
 }
 
 // ---------------------- 
