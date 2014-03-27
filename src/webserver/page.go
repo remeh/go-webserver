@@ -42,13 +42,15 @@ func CreateStaticPage(name string, path string) *Page {
     return page;
 }
 
-func CreateDynamicPage(name string, filenames ...string) (*Page, error) {
+func CreateDynamicPage(name string, router *Router, filenames ...string) (*Page, error) {
     page := new(Page);
     page.Name       = name;
     page.Type       = "GOTEMPLATE";
     page.Template   = nil;
 
-    template, err := template.New(page.Name).ParseFiles(filenames...);
+    funcMap := template.FuncMap{"rreverse": router.Reverse, "createmap": WebserverCreateMap};
+
+    template, err := template.New(page.Name).Funcs(funcMap).ParseFiles(filenames...);
 
     if (err != nil) {
         fmt.Println("[error] Error while compiling template '%s' : %s", page.Name, err);
