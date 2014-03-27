@@ -3,6 +3,7 @@ package webserver;
 import (
     "fmt"
     "net/http"
+    "errors"
 );
 
 // ---------------------- 
@@ -13,8 +14,10 @@ import (
  * @author Rémy MATHIEU
  */
 type Router struct {
-    // dynamic pages
+    // Dynamic pages
     Actions map[*Route]Action;
+    // Quick access to route for reversing route.
+    Routes  map[string]*Route;
 }
 
 // ---------------------- 
@@ -24,7 +27,8 @@ type Router struct {
  * Router initialization.
  */
 func (r *Router) Init() {
-    r.Actions = make(map[*Route]Action);
+    r.Actions   = make(map[*Route]Action);
+    r.Routes    = make(map[string]*Route);
     fmt.Println("[info] Router init OK");
 }
 
@@ -41,7 +45,6 @@ func (r *Router) Start() {
  * @param name      the name of the route
  * @param action    the action to execute.
  * @param routes    on which routes this route is rendered.
- * TODO post method ?
  */
 func (r* Router) Add(name string, method string, action Action, routes... string) {
     for j := 0; j < len(routes); j++ {
@@ -56,7 +59,17 @@ func (r* Router) Add(name string, method string, action Action, routes... string
 
         // stores the action
         r.Actions[newRoute] = action;
+
+        r.Routes[name]      = newRoute;
     }
+}
+
+func (r* Router) Reverse(routeName string, parameters map[string]string) (string,error) {
+    route := r.Routes[routeName];
+    if (route == nil) {
+        return "", errors.New("Unknown route : " + routeName);
+    }
+    return route.Reverse(parameters), nil;
 }
 
 // ---------------------- 

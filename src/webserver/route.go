@@ -67,6 +67,17 @@ func (r *Route) Match(method string, route string) bool {
 }
 
 /**
+ * Reverses the route (replaces the given parameters with the given values).
+ */
+func (r *Route) Reverse(parameters map[string]string) string {
+    result := r.route;
+    for key, value := range parameters {
+        result = strings.Replace(result, key, value, 1);
+    }
+    return result;
+}
+
+/**
  * Extracts the parameters from the given route string.
  * @param route     the route string from which we want to extract the parameters.
  * @param the extracted parameters.
