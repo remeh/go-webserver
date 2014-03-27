@@ -42,7 +42,7 @@ func CreateStaticPage(name string, path string) *Page {
     return page;
 }
 
-func CreateDynamicPage(name string, filenames ...string) *Page {
+func CreateDynamicPage(name string, filenames ...string) (*Page, error) {
     page := new(Page);
     page.Name       = name;
     page.Type       = "GOTEMPLATE";
@@ -56,7 +56,7 @@ func CreateDynamicPage(name string, filenames ...string) *Page {
         page.Template = template;
     }
 
-    return page;
+    return page, err;
 }
 
 /**
