@@ -42,19 +42,13 @@ func CreateStaticPage(name string, path string) *Page {
     return page;
 }
 
-func CreateDynamicPage(name string, path string) *Page {
+func CreateDynamicPage(name string, filenames ...string) *Page {
     page := new(Page);
     page.Name       = name;
     page.Type       = "GOTEMPLATE";
     page.Template   = nil;
 
-    content, err := ioutil.ReadFile(fmt.Sprintf("%s", path));
-    if (err != nil) {
-        fmt.Printf("[error] Error while creating the dynamic page '%s' reading the file '%s'\n", page.Name, path);
-    }
-
-    page.Body = string(content);
-    template, err := template.New(page.Name).Parse(page.Body);
+    template, err := template.New(page.Name).ParseFiles(filenames...);
 
     if (err != nil) {
         fmt.Println("[error] Error while compiling template '%s' : %s", page.Name, err);
@@ -73,7 +67,7 @@ func (p *Page) Init() {
     if (p.Type == "GOTEMPLATE") {
         template, err := template.New(p.Name).Parse(p.Body);
         if (err != nil) {
-            fmt.Println("Error while compiling template '%s' : %s", p.Name, err);
+            fmt.Printf("Error while compiling template '%s' :\n %s\n", p.Name, err);
         } else {
             p.Template = template;
         }
@@ -93,7 +87,7 @@ func (p *Page) RenderTemplate(data interface{}) string {
     out := new(SimpleStringWriter);
     err := p.Template.Execute(out, data);
     if (err != nil) {
-        fmt.Println("Error while rendering the template '%s' : %s", p.Name, err);
+        fmt.Printf("Error while rendering the template '%s' :\n %s\n", p.Name, err);
     }
     return out.Value;
 }
