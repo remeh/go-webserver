@@ -84,12 +84,12 @@ func (r *Route) Reverse(routeParameters map[string]string, getParameters map[str
         if (i != 0) {
             queryParameters += "&";
         }
-        queryParameters = queryParameters + key + "=" + value;
+        queryParameters = queryParameters + url.QueryEscape(key) + "=" + url.QueryEscape(value);
         i++;
     }
 
 
-    return result + "?" + url.QueryEscape(queryParameters);
+    return result + "?" + queryParameters;
 }
 
 /**
