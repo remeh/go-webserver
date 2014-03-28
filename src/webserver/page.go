@@ -77,19 +77,29 @@ func (p *Page) Init() {
     fmt.Printf(" - Page '%s' done\n",p.Name);
 }
 
-func (p *Page) Render(data interface{}) string {
+func (p *Page) Render(data interface{}) (string, error) {
     if (p.Type == "GOTEMPLATE") {
         return p.RenderTemplate(data);
     }
-    return p.Body;
+    return p.Body,nil;
 }
 
+func (p *Page) RenderNamedTemplate(templateName string, data interface{}) (string, error) {
+    out := new(SimpleStringWriter);
+    err := p.Template.ExecuteTemplate(out, templateName, data);
+    if (err != nil) {
+        fmt.Printf("Error while rendering the named template '%s' :\n %s\n", p.Name, err);
+        return "", err;
+    }
+    return out.Value, nil;
+}
 
-func (p *Page) RenderTemplate(data interface{}) string {
+func (p *Page) RenderTemplate(data interface{}) (string,error) {
     out := new(SimpleStringWriter);
     err := p.Template.Execute(out, data);
     if (err != nil) {
         fmt.Printf("Error while rendering the template '%s' :\n %s\n", p.Name, err);
+        return "", err;
     }
-    return out.Value;
+    return out.Value, nil;
 }
