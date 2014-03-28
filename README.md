@@ -8,9 +8,10 @@ Usage:
   * 2nd method: `go run src/main.go`
 
 Features :
-  * **Routing with regexp** : ex: ['/list/:id','/l/:id'] can send to an action which receives a parameter 'id'
-  * **Support go template** : to render pages
-  * **Assets support** : the directory assets is directly rendered without evaluation
+  * **Routing with regexp** : ex: GET ['/list/:id','/l/:id'] can send to an action GET which receives a parameter 'id',
+  * **Support go template** : to render pages in Go templates,
+  * **Reverse routing** : allows to rewrite routes directly in a template,
+  * **Assets support** : the directory assets is directly rendered without evaluation.
 
 Roadmap :
   * **Use regexp only when needed** : route without parameters could be faster if no regexp were use for them.
