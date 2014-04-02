@@ -32,13 +32,13 @@ func (r *Route) Init(method string, route string) {
     r.params = make(map[int]string);
 
     // Looks for parameters in the route
-    varsRegexp := regexp.MustCompile(":[a-zA-Z]*");
+    varsRegexp := regexp.MustCompile(":[a-zA-Z]+");
     finalRoute := route;
 
     // Remembers their position in the route and replace them with the regexp (.*)
     params := varsRegexp.FindAllString(route, -1);
     for i := range params {
-        finalRoute = strings.Replace(finalRoute, params[i], "(.*)", 1);
+        finalRoute = strings.Replace(finalRoute, params[i], "([^/]+)", 1);
         r.params[i] = strings.Trim(params[i],":");
     }
 
