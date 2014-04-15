@@ -4,7 +4,6 @@ import (
     "fmt"
     "net/http"
     "io/ioutil"
-    "strings"
 );
 
 // ---------------------- 
@@ -57,7 +56,7 @@ func TransformAssetPath(path string) string {
 
 func (a *Asset) Render(w http.ResponseWriter, request *http.Request) {
     // set the type of the asset to the response header
-    a.setResponseContentType(w.Header());
+    a.setResponseContentType(&w);
 
     // render the response
     fmt.Fprintf(w, "%s", a.Data);
@@ -66,15 +65,10 @@ func (a *Asset) Render(w http.ResponseWriter, request *http.Request) {
     logAccess(request, false, "");
 }
 
-func (a *Asset) setResponseContentType(Header http.Header) {
-    // suffix of the asset
-    suffix := strings.ToLower(a.Filename[len(a.Filename)-3:]);
+func (a *Asset) setResponseContentType(w *http.ResponseWriter) {
+    writer := *w;
+    writer.Header().Set("Content-type", http.DetectContentType(a.Data));
 
-    // TODO configure an array of types in app/
-    if (suffix == "css") {
-        Header.Set("Content-type", "text/css");
-    } else if (suffix == "json") {
-        Header.Set("Content-type", "application/json");
-    }
+    // TODO checks that the Go http.DetectContentType is enough.
 }
 
