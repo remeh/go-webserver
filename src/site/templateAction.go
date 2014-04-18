@@ -31,6 +31,6 @@ func (a *TemplateAction) Execute(writer http.ResponseWriter, request *http.Reque
     if (parameters["name"] != "") {
         name = parameters["name"];
     }
-    result,_ := a.page.RenderNamedTemplate("test.htm", TemplateParams{name});
+    result,_ := a.page.RenderNamedTemplate("templatetest", TemplateParams{name});
     return 200, result;
 }
