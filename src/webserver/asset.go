@@ -3,11 +3,20 @@ package webserver;
 import (
     "fmt"
     "net/http"
+    "time"
+    "os"
     "io/ioutil"
 );
 
 // ---------------------- 
 // Declarations
+
+const (
+    // Days before expiration of the image 
+    DAYS_BEFORE_EXPIRATION      = 30
+    // Date format for headers of the response
+    DATE_FORMAT                 = "Mon, 02 Jan 2006 15:04:05 MST"
+)
 
 /**
  * An asset, ready each time needed to be rendered.
@@ -15,11 +24,13 @@ import (
  */
 type Asset struct {
     // route of the asset (from the http request)
-    Route string
+    Route           string
     // how to read it on the disk
-    Filename string
+    Filename        string
     // the data read
-    Data []byte
+    Data            []byte
+    // last modified-date
+    LastModified    string
 }
 
 // ----------------------
@@ -36,11 +47,26 @@ func FindAsset(path string) *Asset {
         return nil;
     }
 
+
     // Creates and returns the asset
     var asset *Asset    = new(Asset);
     asset.Route         = path;
     asset.Filename      = filename;
     asset.Data          = data;
+
+    // Sets the last modified date if readable.
+    file, err   := os.Open(filename);
+    if (err != nil) {
+        fmt.Printf("Unable to read information on the file '%s'.", filename);
+        return nil;
+    }
+
+    stats, err := file.Stat();
+    if (err == nil) {
+        asset.LastModified = stats.ModTime().Format(DATE_FORMAT);
+    } else {
+        asset.LastModified = time.Now().Format(DATE_FORMAT);
+    }
 
     return asset;
 }
@@ -67,7 +93,9 @@ func (a *Asset) Render(w http.ResponseWriter, request *http.Request) {
 
 func (a *Asset) setResponseContentType(w *http.ResponseWriter) {
     writer := *w;
+
     writer.Header().Set("Content-type", http.DetectContentType(a.Data));
+    writer.Header().Set("Last-Modified", a.LastModified);
 
     // TODO checks that the Go http.DetectContentType is enough.
 }
