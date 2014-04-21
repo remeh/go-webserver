@@ -5,6 +5,7 @@ import (
     "net/http"
     "time"
     "os"
+    "strings"
     "io/ioutil"
 );
 
@@ -97,6 +98,14 @@ func (a *Asset) setResponseContentType(w *http.ResponseWriter) {
     writer.Header().Set("Content-type", http.DetectContentType(a.Data));
     writer.Header().Set("Last-Modified", a.LastModified);
 
-    // TODO checks that the Go http.DetectContentType is enough.
+    // http.DetectContentType is not enough at all.
+    suffix := strings.ToLower(a.Filename[len(a.Filename)-4:]);
+
+    // TODO configure an array of types in app/
+    if (suffix == ".css") {
+        writer.Header().Set("Content-type", "text/css");
+    } else if (suffix == "json") {
+        writer.Header().Set("Content-type", "application/json");
+    }
 }
 
