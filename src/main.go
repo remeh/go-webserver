@@ -2,17 +2,23 @@ package main;
 
 import (
     "fmt"
-    "./core"
+    "./webserver"
+    "./site"
 );
 
 // ---------------------- 
 
 func main() {
     // instanciate the app
-    var app core.App;
+    var app webserver.App;
+
     app.Init();
 
-    // reads the main configuration
-    fmt.Println("--");
+    // example route
+    app.Router.Add("index", "*", &site.IndexAction{}, "/hello/:name");
+    app.Router.Add("template", "POST", &site.TemplateAction{App: app}, "/template/:name");
+
+    fmt.Println("[info] Starting the application.");
+    app.Start(8080);
 }
 

@@ -1,4 +1,4 @@
-package core;
+package webserver;
 
 import (
     "fmt"
@@ -16,7 +16,7 @@ import (
  */
 type App struct {
     pages   list.List;
-    router  Router;
+    Router  Router;
 }
 
 // ---------------------- 
@@ -34,13 +34,11 @@ func (a *App) Init() {
     // init the router
     a.InitRouter();
 
-    // start
-    a.Start(8080);
 }
 
 func (a *App) InitRouter() {
-    a.router.Init();
-    a.router.Start();
+    a.Router.Init();
+    a.Router.Start();
 }
 
 func (a *App) Start(port int) {
@@ -64,5 +62,5 @@ func logAccess(request *http.Request, fail bool, end string) {
     if (len(ip) == 0) {
         ip = request.RemoteAddr;
     }
-    fmt.Printf("%s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end);
+    fmt.Printf("[info] %s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end);
 }
