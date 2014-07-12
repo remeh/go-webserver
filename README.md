@@ -34,4 +34,4 @@ import "github.com/remeh/go-webserver"
 
 in your source code.
 
-See `src/main.go` and the content of `src/site` for an example of usage.
+See `examples/main.go` and the content of `examples/site` for an example of usage.
