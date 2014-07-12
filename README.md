@@ -3,9 +3,9 @@ remeh's go webserver
 
 Basic Go webserver used for [blurmbl.com](http://blurmbl.com), the [remy.io](http://remy.io) website and some others.
 
-## Usage
-  * 1st method: build an executable :`go build src/main.go && ./main`
-  * 2nd method: `go run src/main.go`
+## Run the example
+  * 1st method: build an executable :`go build example/main.go && ./main`
+  * 2nd method: `go run example/main.go`
 
 ## Features
   * **Routing with regexp** : ex: GET ['/list/:id','/l/:id'] can send to an action GET which receives a parameter 'id',
@@ -15,7 +15,6 @@ Basic Go webserver used for [blurmbl.com](http://blurmbl.com), the [remy.io](htt
 
 ## Roadmap
   * **Use regexp only when needed** : route without parameters could be faster if no regexp were use for them.
-  * **Correct package for Go** : the webserver pkg shouldn't be inside src/webserver
 
 ## How-to
 
@@ -24,13 +23,13 @@ Basic Go webserver used for [blurmbl.com](http://blurmbl.com), the [remy.io](htt
 To get the `webserver` package :
 
 ```
-go get github.com/remeh/go-webserver/src/webserver
+go get github.com/remeh/go-webserver
 ```
 
 You're now able to :
 
 ```
-import github.com/remeh/go-webserver/src/webserver
+import "github.com/remeh/go-webserver"
 ```
 
 in your source code.
