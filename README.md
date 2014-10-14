@@ -3,7 +3,7 @@ remeh's go webserver
 
 Powerful but simple Go webserver.
 
-With benchmark using `siege`, it reaches 27000req/s on a dynamic route (with a parameter directly in the URL) rendering a simple text.
+Benchmark using [wrk](https://github.com/wg/wrk), it reaches more than 41000req/s on a dynamic route (with a parameter directly in the URL) rendering a simple text.
 
 ## Run the example
   * 1st method: build an executable :`go build example/main.go && ./main`
@@ -16,7 +16,7 @@ With benchmark using `siege`, it reaches 27000req/s on a dynamic route (with a p
   * **Assets support** : the directory assets is directly rendered without evaluation.
 
 ## Roadmap
-  * **Use regexp only when needed** : route without parameters could be faster if no regexp were use for them.
+  * **Use regexp only when needed** : route without parameters could be faster if no regexp were used for them.
 
 ## How-to
 
