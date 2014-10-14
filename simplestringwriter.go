@@ -1,9 +1,7 @@
 package webserver
 
-/**
- * A simple writer which writes into a string.
- * @author Rémy MATHIEU
- */
+// A simple writer which writes into a string.
+// @author Rémy MATHIEU
 type SimpleStringWriter struct {
 	Value string
 }

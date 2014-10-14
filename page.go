@@ -9,12 +9,10 @@ import (
 // ----------------------
 // Declarations
 
-/**
- * A page of the app.
- * Stored in RAM.
- *
- * @author Rémy MATHIEU
- */
+// A page of the app.
+// Stored in RAM.
+//
+// @author Rémy MATHIEU
 type Page struct {
 	Name string
 	Body string
@@ -61,9 +59,7 @@ func CreateDynamicPage(name string, router *Router, filenames ...string) (*Page,
 	return page, err
 }
 
-/**
- * Page initialization.
- */
+// Page initialization.
 func (p *Page) Init() {
 	// Go Templates need to be compiled.
 	if p.Type == "GOTEMPLATE" {

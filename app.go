@@ -10,10 +10,8 @@ import (
 // ----------------------
 // Declarations
 
-/**
- * The application struct.
- * @author Rémy MATHIEU
- */
+// The application struct.
+// @author Rémy MATHIEU
 type App struct {
 	pages  list.List
 	Router Router
@@ -22,9 +20,7 @@ type App struct {
 // ----------------------
 // Methods
 
-/**
- * App initialization.
- */
+// App initialization.
 func (a *App) Init() {
 	LogWebserverInfo("------------------------")
 	LogWebserverInfo("⡀⣀ ⢀⡀ ⣀⣀  ⢀⡀ ⣇⡀ ⠃ ⢀⣀   ⢀⣀ ⠄ ⣀⣀  ⣀⡀ ⡇ ⢀⡀   ⢀⡀ ⢀⡀   ⡀ ⢀ ⢀⡀ ⣇⡀ ⢀⣀ ⢀⡀ ⡀⣀ ⡀⢀ ⢀⡀ ⡀⣀")

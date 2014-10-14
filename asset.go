@@ -1,7 +1,7 @@
 package webserver
 
 import (
-    "fmt"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -19,10 +19,10 @@ const (
 	DATE_FORMAT = "Mon, 02 Jan 2006 15:04:05 MST"
 )
 
-/**
- * An asset, ready each time needed to be rendered.
- * @author Rémy MATHIEU
- */
+//
+// An asset, ready each time needed to be rendered.
+// @author Rémy MATHIEU
+//
 type Asset struct {
 	// route of the asset (from the http request)
 	Route string
