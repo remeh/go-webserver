@@ -1,7 +1,7 @@
 package webserver
 
 import (
-	"fmt"
+    "fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -57,7 +57,7 @@ func FindAsset(path string) *Asset {
 	// Sets the last modified date if readable.
 	file, err := os.Open(filename)
 	if err != nil {
-		fmt.Printf("Unable to read information on the file '%s'.", filename)
+		LogWebserverInfof("Unable to read information on the file '%s'.", filename)
 		return nil
 	}
 

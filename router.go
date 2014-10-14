@@ -29,7 +29,7 @@ type Router struct {
 func (r *Router) Init() {
     r.Actions   = make(map[*Route]Action);
     r.Routes    = make(map[string]*Route);
-    fmt.Println("[info] Router init OK");
+    LogWebserverInfo("Router init OK");
 }
 
 /**
@@ -37,7 +37,7 @@ func (r *Router) Init() {
  */
 func (r *Router) Start() {
     http.HandleFunc("/", func(w http.ResponseWriter, request *http.Request) { r.route(w, request) });
-    fmt.Println("[info] Router started");
+    LogWebserverInfo("Router started");
 }
 
 /**
@@ -88,7 +88,7 @@ func (r *Router) route(w http.ResponseWriter, request *http.Request) {
     route   := r.matchRoute(request.Method, url);
 
     if (route != nil) {
-        // executes the action
+        // Executes the action
         go logAccess(request, false, "");
 
         params := route.ReadParameters(url);

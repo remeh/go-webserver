@@ -35,7 +35,7 @@ func CreateStaticPage(name string, path string) *Page {
 
 	content, err := ioutil.ReadFile(fmt.Sprintf("%s", path))
 	if err != nil {
-		fmt.Printf("x Error while creating the static page '%s' reading the file '%s'\n", page.Name, path)
+		LogWebserverInfof("x Error while creating the static page '%s' reading the file '%s'\n", page.Name, path)
 	}
 
 	page.Body = string(content)
@@ -53,7 +53,7 @@ func CreateDynamicPage(name string, router *Router, filenames ...string) (*Page,
 	template, err := template.New(page.Name).Funcs(funcMap).ParseFiles(filenames...)
 
 	if err != nil {
-		fmt.Println("[error] Error while compiling template '%s' : %s", page.Name, err)
+		LogWebserverErrorf("Error while compiling template '%s' : %s", page.Name, err.Error())
 	} else {
 		page.Template = template
 	}
@@ -69,12 +69,12 @@ func (p *Page) Init() {
 	if p.Type == "GOTEMPLATE" {
 		template, err := template.New(p.Name).Parse(p.Body)
 		if err != nil {
-			fmt.Printf("Error while compiling template '%s' :\n %s\n", p.Name, err)
+			LogWebserverInfof("Error while compiling template '%s' :\n %s\n", p.Name, err.Error())
 		} else {
 			p.Template = template
 		}
 	}
-	fmt.Printf(" - Page '%s' done\n", p.Name)
+	LogWebserverInfof(" - Page '%s' done\n", p.Name)
 }
 
 func (p *Page) Render(data interface{}) (string, error) {
@@ -88,7 +88,7 @@ func (p *Page) RenderNamedTemplate(templateName string, data interface{}) (strin
 	out := new(SimpleStringWriter)
 	err := p.Template.ExecuteTemplate(out, templateName, data)
 	if err != nil {
-		fmt.Printf("Error while rendering the named template '%s' :\n %s\n", p.Name, err)
+		LogWebserverInfof("Error while rendering the named template '%s' :\n %s\n", p.Name, err.Error())
 		return "", err
 	}
 	return out.Value, nil
@@ -98,7 +98,7 @@ func (p *Page) RenderTemplate(data interface{}) (string, error) {
 	out := new(SimpleStringWriter)
 	err := p.Template.Execute(out, data)
 	if err != nil {
-		fmt.Printf("Error while rendering the template '%s' :\n %s\n", p.Name, err)
+		LogWebserverInfof("Error while rendering the template '%s' :\n %s\n", p.Name, err.Error())
 		return "", err
 	}
 	return out.Value, nil

@@ -26,10 +26,10 @@ type App struct {
  * App initialization.
  */
 func (a *App) Init() {
-	fmt.Println("------------------------")
-	fmt.Println("⡀⣀ ⢀⡀ ⣀⣀  ⢀⡀ ⣇⡀ ⠃ ⢀⣀   ⢀⣀ ⠄ ⣀⣀  ⣀⡀ ⡇ ⢀⡀   ⢀⡀ ⢀⡀   ⡀ ⢀ ⢀⡀ ⣇⡀ ⢀⣀ ⢀⡀ ⡀⣀ ⡀⢀ ⢀⡀ ⡀⣀")
-	fmt.Println("⠏  ⠣⠭ ⠇⠇⠇ ⠣⠭ ⠇⠸   ⠭⠕   ⠭⠕ ⠇ ⠇⠇⠇ ⡧⠜ ⠣ ⠣⠭   ⣑⡺ ⠣⠜   ⠱⠱⠃ ⠣⠭ ⠧⠜ ⠭⠕ ⠣⠭ ⠏  ⠱⠃ ⠣⠭ ⠏ ")
-	fmt.Println("------------------------")
+	LogWebserverInfo("------------------------")
+	LogWebserverInfo("⡀⣀ ⢀⡀ ⣀⣀  ⢀⡀ ⣇⡀ ⠃ ⢀⣀   ⢀⣀ ⠄ ⣀⣀  ⣀⡀ ⡇ ⢀⡀   ⢀⡀ ⢀⡀   ⡀ ⢀ ⢀⡀ ⣇⡀ ⢀⣀ ⢀⡀ ⡀⣀ ⡀⢀ ⢀⡀ ⡀⣀")
+	LogWebserverInfo("⠏  ⠣⠭ ⠇⠇⠇ ⠣⠭ ⠇⠸   ⠭⠕   ⠭⠕ ⠇ ⠇⠇⠇ ⡧⠜ ⠣ ⠣⠭   ⣑⡺ ⠣⠜   ⠱⠱⠃ ⠣⠭ ⠧⠜ ⠭⠕ ⠣⠭ ⠏  ⠱⠃ ⠣⠭ ⠏ ")
+	LogWebserverInfo("------------------------")
 
 	// init the router
 	a.InitRouter()
@@ -62,5 +62,5 @@ func logAccess(request *http.Request, fail bool, end string) {
 	if len(ip) == 0 {
 		ip = request.RemoteAddr
 	}
-	fmt.Printf("[info] %s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end)
+	LogWebserverInfof("[info] %s [%s] %s -> %s %s for %s %s%s%s\n", start, time.Now().Format("2006-01-02 15:04:05"), ip, request.Method, request.Proto, request.URL.Path, referer, userAgent, end)
 }

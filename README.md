@@ -1,7 +1,9 @@
 remeh's go webserver
 ==
 
-Basic Go webserver used for [blurmbl.com](http://blurmbl.com), the [remy.io](http://remy.io) website and some others.
+Powerful but simple Go webserver.
+
+With benchmark using `siege`, it reaches 27000req/s on a dynamic route (with a parameter directly in the URL) rendering a simple text.
 
 ## Run the example
   * 1st method: build an executable :`go build example/main.go && ./main`
