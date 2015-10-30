@@ -1,3 +1,5 @@
+### Deprecated: directly use https://golang.org/pkg/net/http instead!
+
 remeh's go webserver
 ==
 
